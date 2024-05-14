@@ -1,0 +1,16 @@
+{
+    "n_repeat": 10,
+    "data": {
+        "name" : "synthetic",
+        "n_data" : [1000, 5000],
+        "noise_level": 0.0,
+        "preprocess": "Identity"
+    },
+    "model": {
+        "name": "spmmr",
+        "lam_max": 0.1,
+        "lam_min": 0.001,
+        "n_lam_search": 5,
+        "scale": 1.0
+    }
+}

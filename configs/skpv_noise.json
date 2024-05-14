@@ -1,0 +1,20 @@
+{
+    "n_repeat": 10,
+    "data": {
+        "name" : "synthetic",
+        "n_data" : 1000,
+        "noise_level": [0.1, 1.0],
+        "preprocess": "Identity"
+    },
+    "model": {
+        "name": "skpv",
+        "lam1_max": 0.1,
+        "lam1_min": 0.001,
+        "n_lam1_search": 5,
+        "lam2_max": 0.1,
+        "lam2_min": 0.001,
+        "n_lam2_search": 5,
+        "split_ratio": 0.5,
+        "scale": 1.0
+    }
+}

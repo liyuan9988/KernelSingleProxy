@@ -1,0 +1,14 @@
+{
+    "n_repeat": 10,
+    "data": {
+        "name" : "mnist",
+        "n_data" : [1000, 5000],
+        "noise_level": 0.0,
+        "preprocess": "Identity"
+    },
+    "model": {
+        "name": "spmmr",
+        "lam": 0.001,
+        "scale": 1.0
+    }
+}
