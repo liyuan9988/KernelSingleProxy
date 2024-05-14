@@ -3,9 +3,9 @@
 *.pdf
 .idea
 *.pyc
-data
 dumps
 final_results
 logs
 notebook
 src/utils/.mypy_cache
+data/MNIST
