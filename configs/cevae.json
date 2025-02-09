@@ -2,7 +2,7 @@
     "n_repeat": 10,
     "data": {
         "name" : "synthetic",
-        "n_data" : [1000],
+        "n_data" : [1000, 5000],
         "noise_level": 0.0
     },
     "model": {

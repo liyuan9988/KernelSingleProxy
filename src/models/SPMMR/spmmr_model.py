@@ -10,7 +10,7 @@ from src.data import generate_train_data, generate_test_data
 
 
 def get_kernel_func(data_name: str) -> Tuple[AbsKernel, AbsKernel, AbsKernel]:
-    if data_name in ("synthetic", "mnist"):
+    if data_name in ("synthetic", "mnist", "step"):
         return GaussianKernel(), GaussianKernel(), GaussianKernel()
     else:
         raise ValueError(f"data name {data_name} is not valid")
@@ -27,13 +27,14 @@ class SPMMRModel:
     train_outcome_proxy: np.ndarray
 
     def __init__(self, val_ratio: float = 0.1, lam=None, lam_max=None, lam_min=None,
-                 n_lam_search=None, scale=1.0, **kwargs):
+                 n_lam_search=None, scale=1.0, use_old_form=False, **kwargs):
         self.lam: Optional[float] = lam
         self.lam_max: Optional[float] = lam_max
         self.lam_min: Optional[float] = lam_min
         self.n_lam_search: Optional[int] = n_lam_search
         self.val_ratio = val_ratio
         self.scale: float = scale
+        self.use_old_form: bool = use_old_form
 
     def tune_lam(self, L, sqG, val_data):
         lam1_candidate_list = np.logspace(np.log10(self.lam_min), np.log10(self.lam_max), self.n_lam_search)
@@ -86,8 +87,11 @@ class SPMMRModel:
             assert val_data is not None
             self.tune_lam(L, sqG, val_data)
 
-        self.alpha = sqG @ np.linalg.solve(sqG @ L @ sqG + self.lam * n_data * n_data * np.eye(n_data),
-                                           sqG @ train_data.outcome)
+        if self.use_old_form:
+            self.alpha = np.linalg.solve(L @ G @ L + self.lam * n_data * n_data * L,  L @ G @ train_data.outcome)
+        else:
+            self.alpha = sqG @ np.linalg.solve(sqG @ L @ sqG + self.lam * n_data * n_data * np.eye(n_data),
+                                               sqG @ train_data.outcome)
 
         self.proxy_mean_vec = np.mean(KWW, axis=1, keepdims=True)
 

@@ -2,14 +2,14 @@
     "n_repeat": 1,
     "data": {
         "name" : "synthetic",
-        "n_data" : 5000,
+        "n_data" : 500,
         "noise_level": 0.0,
-        "high_freq_level":  0.0,
         "preprocess": "Identity"
     },
     "model": {
-        "name": "regression",
+       "name": "spmmr",
         "lam": 0.001,
-        "scale": 1.0
+        "scale": 100.0,
+        "use_old_form": true
     }
 }

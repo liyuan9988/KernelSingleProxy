@@ -11,7 +11,7 @@ from src.data import generate_train_data, generate_test_data
 
 
 def get_kernel_func(data_name: str) -> Tuple[AbsKernel, AbsKernel, AbsKernel]:
-    if data_name in ("synthetic", "mnist"):
+    if data_name in ("synthetic", "mnist", "step"):
         return GaussianKernel(), GaussianKernel(), GaussianKernel()
     else:
         raise ValueError(f"data name {data_name} is not valid")
@@ -29,7 +29,7 @@ class SKPVModel:
 
     def __init__(self, split_ratio: float, lam1=None, lam2=None, lam1_max=None, lam1_min=None,
                  n_lam1_search=None, lam2_max=None, lam2_min=None, n_lam2_search=None,
-                 scale=1.0, **kwargs):
+                 scale=1.0, use_old_form=False, **kwargs):
         self.lam1: Optional[float] = lam1
         self.lam2: Optional[float] = lam2
         self.lam1_max: Optional[float] = lam1_max
@@ -40,6 +40,7 @@ class SKPVModel:
         self.n_lam2_search: Optional[int] = n_lam2_search
         self.scale: float = scale
         self.split_ratio: float = split_ratio
+        self.use_old_form: float = use_old_form
 
     def tune_lam1(self, K1, KW1W1):
         lam1_candidate_list = np.logspace(np.log10(self.lam1_min), np.log10(self.lam1_max), self.n_lam1_search)
@@ -100,8 +101,14 @@ class SKPVModel:
         self.w = B.T @ np.mean(KW1W1, axis=1, keepdims=True)
         if self.lam2 is None:
             self.tune_lam2(M, M_tilde, train_data_2nd.outcome, train_data_1st.outcome)
-        self.alpha = np.linalg.solve(M + self.lam2 * n_train_2nd * np.eye(n_train_2nd),
-                                     train_data_2nd.outcome)
+
+
+        if self.use_old_form:
+            print("use_old_form")
+            self.alpha = np.linalg.solve(M @ M + self.lam2 * n_train_2nd * M, M @ train_data_2nd.outcome)
+        else:
+            self.alpha = np.linalg.solve(M + self.lam2 * n_train_2nd * np.eye(n_train_2nd), train_data_2nd.outcome)
+
         print((self.lam1, self.lam2))
 
     def predict(self, treatment: np.ndarray) -> np.ndarray:

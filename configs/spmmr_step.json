@@ -1,11 +1,10 @@
 {
     "n_repeat": 10,
     "data": {
-        "name" : "synthetic",
+        "name" : "step",
         "n_data" : 1000,
+        "n_steps": [3, 4, 10, 30],
         "noise_level": 0.0,
-        "high_freq_level":  0.0,
-        "freq_ratio": [1.0, 1.5, 2.0, 4.0],
         "preprocess": "Identity"
     },
     "model": {

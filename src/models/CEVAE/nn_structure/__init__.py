@@ -10,7 +10,7 @@ logger = logging.getLogger()
 
 
 def build_extractor(data_name: str, hidden_dim, n_sample):
-    if data_name == "synthetic":
+    if data_name in ("synthetic", "step"):
         return SyntheticDistribution(n_hidden_dim=hidden_dim, n_learning_sample=n_sample)
     elif data_name == "mnist":
         return MNISTDistribution(n_hidden_dim=hidden_dim, n_learning_sample=n_sample)

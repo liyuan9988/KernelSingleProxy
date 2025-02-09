@@ -11,7 +11,7 @@ from src.data import generate_train_data, generate_test_data
 
 
 def get_kernel_func(data_name: str) -> Tuple[AbsKernel, AbsKernel, AbsKernel]:
-    if data_name in ("synthetic", "mnist"):
+    if data_name in ("synthetic", "mnist", "step"):
         return GaussianKernel(), GaussianKernel(), GaussianKernel()
     else:
         raise ValueError(f"data name {data_name} is not valid")

@@ -9,3 +9,4 @@ logs
 notebook
 src/utils/.mypy_cache
 data/MNIST
+final_results_old
